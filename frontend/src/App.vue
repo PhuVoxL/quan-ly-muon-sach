@@ -15,6 +15,10 @@
               
               <router-link class="nav-link" to="/nhaxuatban">Nhà Xuất Bản</router-link>
             </li>
+            <li class="nav-item">
+              <!-- Thêm nút Quản lý sách -->
+              <router-link class="nav-link" to="/sach">Quản Lý Sách</router-link>
+            </li>
           </ul>
         </div>
       </div>
