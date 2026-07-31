@@ -9,4 +9,8 @@ router.get('/', nhaXuatBanController.findAll);
 // Khi có yêu cầu POST (Gửi dữ liệu lên) tới thư mục gốc của NXB -> Gọi hàm create
 router.post('/', nhaXuatBanController.create);
 
+// Phương thức DELETE, :id là một tham số động đại diện cho mã ObjectId của MongoDB
+router.delete('/:id', nhaXuatBanController.delete);
+
+
 module.exports = router;

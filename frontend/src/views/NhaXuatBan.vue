@@ -34,6 +34,7 @@
           <th>Mã NXB</th>
           <th>Tên Nhà Xuất Bản</th>
           <th>Địa Chỉ</th>
+          <th>Hành Động</th>
         </tr>
       </thead>
       <tbody>
@@ -41,6 +42,10 @@
           <td>{{ nxb.maNXB }}</td>
           <td>{{ nxb.tenNXB }}</td>
           <td>{{ nxb.diaChi }}</td>
+          <td>
+            <!-- Nút Xóa gọi hàm xoaNXB và truyền vào ID của dòng hiện tại -->
+            <button class="btn btn-danger btn-sm" @click="xoaNXB(nxb._id)">Xóa</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -86,6 +91,24 @@ const themNXB = async () => {
     console.error('Lỗi khi thêm mới:', error);
   }
 };
+
+// Hàm xóa
+const xoaNXB = async (id) => {
+  // Hiển thị hộp thoại xác nhận trước khi xóa cho an toàn
+  const xacNhan = confirm('Bạn có chắc chắn muốn xóa Nhà xuất bản này không?');
+  if (xacNhan) {
+    try {
+      // Gửi yêu cầu DELETE kèm theo id xuống Backend
+      await axios.delete(`http://localhost:3000/api/nhaxuatban/${id}`);
+      // Xóa xong thì gọi lại hàm lấy danh sách để làm mới bảng
+      layDanhSach();
+    } catch (error) {
+      console.error('Lỗi khi xóa:', error);
+      alert('Không thể xóa Nhà xuất bản này!');
+    }
+  }
+};
+
 
 onMounted(() => {
   layDanhSach();

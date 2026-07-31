@@ -24,3 +24,17 @@ exports.findAll = async (req, res) => {
         res.status(500).json({ message: "Loi khi lay danh sach", error });
     }
 };
+
+// Hàm 3: Xóa một Nhà xuất bản dựa vào ID
+exports.delete = async (req, res) => {
+    try {
+        // req.params.id sẽ lấy mã ID từ đường dẫn URL
+        const nxbBiXoa = await NhaXuatBan.findByIdAndDelete(req.params.id);
+        if (!nxbBiXoa) {
+            return res.status(404).json({ message: "Không tìm thấy Nhà xuất bản để xóa" });
+        }
+        res.status(200).json({ message: "Xóa thành công!" });
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi xóa", error });
+    }
+};
