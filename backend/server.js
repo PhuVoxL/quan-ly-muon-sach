@@ -36,6 +36,10 @@ mongoose.connect(process.env.MONGODB_URI)
     const theoDoiMuonSachRoute = require('./routes/theoDoiMuonSach.route');
     app.use('/api/theodoimuonsach', theoDoiMuonSachRoute);
 
+    const authRoute = require('./routes/auth.route');
+    app.use('/api/auth', authRoute);
+
+
 // Đường dẫn kiểm tra
 app.get('/', (req, res) => {
     res.send('Xin chao! Backend Quan ly muon sach dang chay!');
