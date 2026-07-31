@@ -12,8 +12,8 @@
               <router-link class="nav-link" to="/">Trang chủ</router-link>
             </li>
             <li class="nav-item">
-              <!-- Tạm để dấu #, bước sau chúng ta sẽ làm trang Nhà Xuất Bản thực sự -->
-              <a class="nav-link" href="#">Nhà Xuất Bản</a>
+              
+              <router-link class="nav-link" to="/nhaxuatban">Nhà Xuất Bản</router-link>
             </li>
           </ul>
         </div>
