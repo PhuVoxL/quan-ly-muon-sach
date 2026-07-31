@@ -23,6 +23,14 @@ mongoose.connect(process.env.MONGODB_URI)
     app.use('/api/nhaxuatban', nhaXuatBanRoute);
 
 
+    const docGiaRoute = require('./routes/docGia.route');
+    app.use('/api/docgia', docGiaRoute);
+
+const sachRoute = require('./routes/sach.route');
+    app.use('/api/sach', sachRoute);
+
+
+
 // Đường dẫn kiểm tra
 app.get('/', (req, res) => {
     res.send('Xin chao! Backend Quan ly muon sach dang chay!');
