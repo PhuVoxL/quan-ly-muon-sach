@@ -113,3 +113,20 @@ exports.findLichSuCaNhan = async (req, res) => {
         res.status(500).json({ message: "Lỗi khi lấy lịch sử mượn sách", error });
     }
 };
+
+
+// 6. Độc giả gửi yêu cầu gia hạn sách
+exports.yeuCauGiaHan = async (req, res) => {
+    try {
+        const phieu = await TheoDoiMuonSach.findById(req.params.id);
+        if (!phieu) return res.status(404).json({ message: "Không tìm thấy phiếu mượn" });
+        
+        // Đổi trạng thái phiếu mượn
+        phieu.trangThai = 'Yêu cầu gia hạn';
+        await phieu.save();
+        
+        res.status(200).json({ message: "Đã gửi yêu cầu gia hạn thành công!" });
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi gửi yêu cầu", error });
+    }
+};

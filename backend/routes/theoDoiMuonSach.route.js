@@ -13,6 +13,7 @@ router.post('/', verifyToken, theoDoiMuonSachController.create);
 // Chỉ nhân viên mới được xem toàn bộ danh sách phiếu mượn của hệ thống
 router.get('/', verifyToken, verifyNhanVien, theoDoiMuonSachController.findAll);
 // Chỉ nhân viên mới được duyệt, cập nhật trạng thái hoặc xóa phiếu
+router.put('/gia-han/:id', verifyToken, theoDoiMuonSachController.yeuCauGiaHan);
 router.put('/:id', verifyToken, verifyNhanVien, theoDoiMuonSachController.update);
 router.delete('/:id', verifyToken, verifyNhanVien, theoDoiMuonSachController.delete);
 

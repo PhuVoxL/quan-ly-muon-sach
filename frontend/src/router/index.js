@@ -11,7 +11,7 @@ import DangKy from '../views/DangKy.vue';
 
 import TimSach from '../views/TimSach.vue';
 import ChiTietSach from '../views/ChiTietSach.vue';
-
+import LichSuMuon from '../views/LichSuMuon.vue';
 
 
 const routes = [
@@ -25,7 +25,10 @@ const routes = [
     { path: '/nhanvien', component: NhanVien },
     // Cánh cửa cho Khách
     { path: '/dangnhap', component: DangNhap },
-    { path: '/dangky', component: DangKy }
+    { path: '/dangky', component: DangKy },
+    { path: '/lichsu', component: LichSuMuon },
+
+
 ];
 
 const router = createRouter({
