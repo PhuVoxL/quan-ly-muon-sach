@@ -9,8 +9,15 @@ import NhanVien from '../views/NhanVien.vue';
 import DangNhap from '../views/DangNhap.vue';
 import DangKy from '../views/DangKy.vue';
 
+import TimSach from '../views/TimSach.vue';
+import ChiTietSach from '../views/ChiTietSach.vue';
+
+
+
 const routes = [
     { path: '/', component: TrangChu },
+    { path: '/timsach', component: TimSach },
+    { path: '/chitiet/:id', component: ChiTietSach },
     { path: '/nhaxuatban', component: NhaXuatBan },
     { path: '/sach', component: Sach },
     { path: '/docgia', component: DocGia },

@@ -16,7 +16,7 @@
             
             <!-- 1. Giao diện chung cho Khách & Độc Giả (Không phải Nhân viên) -->
             <li class="nav-item" v-if="!isNhanVien">
-              <router-link class="nav-link" to="/sach">Tìm Sách</router-link>
+              <router-link class="nav-link" to="/timsach">Tìm Sách</router-link>
             </li>
             
             <!-- 2. Giao diện riêng của Độc Giả -->
