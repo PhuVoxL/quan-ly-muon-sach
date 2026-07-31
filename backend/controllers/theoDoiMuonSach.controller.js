@@ -38,34 +38,39 @@ exports.findAll = async (req, res) => {
         res.status(500).json({ message: "Lỗi khi lấy danh sách phieu muon", error });
     }
 };
-
+// 3. Cập nhật phiếu mượn (Xử lý Duyệt, Từ chối, Trả sách)
 exports.update = async (req, res) => {
     try {
-        // Xử lý chuỗi rỗng từ Frontend gửi lên thành null để MongoDB hiểu đúng trạng thái "Chưa trả"
-        if (req.body.ngayTra === '') {
-            req.body.ngayTra = null;
-        }
-
         const phieuCu = await TheoDoiMuonSach.findById(req.params.id);
         if (!phieuCu) return res.status(404).json({ message: "Không tìm thấy phiếu mượn" });
 
-        // Tìm cuốn sách liên quan để chuẩn bị cập nhật số lượng
         const sach = await Sach.findById(phieuCu.sachId);
-        
+        const trangThaiMoi = req.body.trangThai;
+
         if (sach) {
-            // Trường hợp 1: Khách trả sách (Phiếu cũ chưa có ngày trả, form gửi lên có ngày trả)
-            if (!phieuCu.ngayTra && req.body.ngayTra) {
+            // Nhóm trạng thái sách đang "rời khỏi kho"
+            const dangXuatKho = ['Chờ duyệt', 'Đang mượn', 'Yêu cầu gia hạn'];
+            // Nhóm trạng thái sách "nằm trong kho"
+            const dangTrongKho = ['Đã trả', 'Từ chối'];
+
+            // Nếu trạng thái cũ là đang mượn/chờ duyệt, mà trạng thái mới là Đã trả/Từ chối -> Hoàn +1 vào kho
+            if (dangXuatKho.includes(phieuCu.trangThai) && dangTrongKho.includes(trangThaiMoi)) {
                 sach.soQuyen += 1;
                 await sach.save();
             } 
-            // Trường hợp 2: Hoàn tác trả sách (Phiếu cũ đã trả, nhưng nhân viên bấm nhầm nên xóa ngày trả đi)
-            else if (phieuCu.ngayTra && !req.body.ngayTra) {
+            // Nếu nhân viên lỡ tay bấm nhầm "Từ chối", giờ đổi lại thành "Đang mượn" -> Trừ -1 kho
+            else if (dangTrongKho.includes(phieuCu.trangThai) && dangXuatKho.includes(trangThaiMoi)) {
                 sach.soQuyen -= 1;
                 await sach.save();
             }
         }
 
-        // Cập nhật lại thông tin phiếu mượn
+        // Tự động gán ngày trả hôm nay nếu nhân viên chọn trạng thái "Đã trả" mà quên nhập ngày
+        if (trangThaiMoi === 'Đã trả' && !req.body.ngayTra) {
+            req.body.ngayTra = new Date();
+        }
+
+        // Tiến hành lưu cập nhật
         const phieuCapNhat = await TheoDoiMuonSach.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json(phieuCapNhat);
     } catch (error) {
