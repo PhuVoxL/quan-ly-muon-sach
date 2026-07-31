@@ -173,7 +173,13 @@ const luuPhieu = async () => {
     huySua();
     taiDuLieu();
   } catch (error) {
-    alert('Có lỗi xảy ra khi lưu phiếu mượn!');
+    if (error.response && error.response.data.message) {
+      alert(error.response.data.message);
+    } else {
+      alert('Có lỗi xảy ra khi lưu phiếu mượn!');
+    }
+
+
   }
 };
 
