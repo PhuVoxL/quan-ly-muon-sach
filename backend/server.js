@@ -38,7 +38,10 @@ mongoose.connect(process.env.MONGODB_URI)
 
     const authRoute = require('./routes/auth.route');
     app.use('/api/auth', authRoute);
-
+    
+    
+    const danhGiaRoute = require('./routes/danhGia.route');
+    app.use('/api/danhgia', danhGiaRoute);
 
 // Đường dẫn kiểm tra
 app.get('/', (req, res) => {
