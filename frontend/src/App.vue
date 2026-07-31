@@ -19,6 +19,9 @@
               <!-- Thêm nút Quản lý sách -->
               <router-link class="nav-link" to="/sach">Quản Lý Sách</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/docgia">Độc Giả</router-link>
+            </li>
           </ul>
         </div>
       </div>
