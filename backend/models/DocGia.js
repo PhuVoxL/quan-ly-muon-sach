@@ -4,12 +4,15 @@ const docGiaSchema = new mongoose.Schema({
     maDocGia: { type: String, required: true, unique: true },
     hoLot: { type: String },
     ten: { type: String, required: true },
-    ngaySinh: { type: Date }, // Kiểu Date dùng để lưu ngày tháng
-    phai: { type: String }, // Giới tính (Nam/Nữ)
+    ngaySinh: { type: Date },
+    phai: { type: String },
     diaChi: { type: String },
-    dienThoai: { type: String }
-}, { 
-    timestamps: true 
+    dienThoai: { type: String },
+    // --- THÊM 2 TRƯỜNG MỚI ĐỂ PHỤC VỤ ĐĂNG NHẬP ---
+    email: { type: String, required: true, unique: true }, 
+    password: { type: String, required: true }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('DocGia', docGiaSchema);
