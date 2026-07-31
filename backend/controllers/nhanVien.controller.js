@@ -18,3 +18,26 @@ exports.findAll = async (req, res) => {
         res.status(500).json({ message: "Loi khi lay danh sach", error });
     }
 };
+
+
+// Cập nhật thông tin Nhân viên
+exports.update = async (req, res) => {
+    try {
+        const nhanVienCapNhat = await NhanVien.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!nhanVienCapNhat) return res.status(404).json({ message: "Không tìm thấy Nhân viên" });
+        res.status(200).json(nhanVienCapNhat);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi cập nhật", error });
+    }
+};
+
+// Xóa Nhân viên
+exports.delete = async (req, res) => {
+    try {
+        const nhanVienBiXoa = await NhanVien.findByIdAndDelete(req.params.id);
+        if (!nhanVienBiXoa) return res.status(404).json({ message: "Không tìm thấy Nhân viên" });
+        res.status(200).json({ message: "Xóa thành công!" });
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi xóa", error });
+    }
+};

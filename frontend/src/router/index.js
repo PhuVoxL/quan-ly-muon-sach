@@ -4,7 +4,7 @@ import NhaXuatBan from '../views/NhaXuatBan.vue';
 import Sach from '../views/Sach.vue';
 import DocGia from '../views/DocGia.vue';
 import MuonTra from '../views/MuonTra.vue';
-
+import NhanVien from '../views/NhanVien.vue';
 
 
 
@@ -28,7 +28,8 @@ const routes = [
         path: '/docgia', 
         component: DocGia 
     },
-    { path: '/muontra', component: MuonTra }
+    { path: '/muontra', component: MuonTra },
+    { path: '/nhanvien', component: NhanVien }
 
 
 

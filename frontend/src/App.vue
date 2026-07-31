@@ -25,6 +25,9 @@
             <li class="nav-item">
               <router-link class="nav-link text-info" to="/muontra">Mượn Trả</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link text-warning" to="/nhanvien">Nhân Viên</router-link>
+            </li>
           </ul>
         </div>
       </div>
