@@ -33,7 +33,7 @@ mongoose.connect(process.env.MONGODB_URI)
     const nhanVienRoute = require('./routes/nhanVien.route');
     app.use('/api/nhanvien', nhanVienRoute);
 
-    const theoDoiMuonSachRoute = require('./routes/theodoimuonsach.route');
+    const theoDoiMuonSachRoute = require('./routes/theoDoiMuonSach.route');
     app.use('/api/theodoimuonsach', theoDoiMuonSachRoute);
 
 // Đường dẫn kiểm tra
