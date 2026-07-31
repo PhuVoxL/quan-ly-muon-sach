@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 const nhanVienController = require('../controllers/nhanVien.controller');
 
-router.get('/', nhanVienController.findAll);
-router.post('/', nhanVienController.create);
+const { verifyToken, verifyNhanVien } = require('../middlewares/auth.middleware');
 
-router.put('/:id', nhanVienController.update);
-router.delete('/:id', nhanVienController.delete);
+// GET: Ai cũng có thể xem danh sách sách (Không cần bảo vệ)
+router.get('/', nhanVienController.findAll);
+
+// POST, PUT, DELETE: Bắt buộc phải có token (đã đăng nhập) VÀ phải là nhân viên
+router.post('/', verifyToken, verifyNhanVien, nhanVienController.create);
+router.put('/:id', verifyToken, verifyNhanVien, nhanVienController.update);
+router.delete('/:id', verifyToken, verifyNhanVien, nhanVienController.delete);
 
 
 module.exports = router;

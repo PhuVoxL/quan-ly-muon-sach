@@ -3,16 +3,14 @@ const router = express.Router();
 // Gọi người phục vụ (Controller) vừa viết ở trên vào đây
 const nhaXuatBanController = require('../controllers/nhaXuatBan.controller');
 
-// Khi có yêu cầu GET (Lấy dữ liệu) tới thư mục gốc của NXB -> Gọi hàm findAll
+const { verifyToken, verifyNhanVien } = require('../middlewares/auth.middleware');
+
+// GET: Ai cũng có thể xem danh sách sách (Không cần bảo vệ)
 router.get('/', nhaXuatBanController.findAll);
 
-// Khi có yêu cầu POST (Gửi dữ liệu lên) tới thư mục gốc của NXB -> Gọi hàm create
-router.post('/', nhaXuatBanController.create);
-
-// Phương thức DELETE, :id là một tham số động đại diện cho mã ObjectId của MongoDB
-router.delete('/:id', nhaXuatBanController.delete);
-
-// Phương thức PUT dùng để cập nhật toàn bộ thông tin của một đối tượng
-router.put('/:id', nhaXuatBanController.update);
+// POST, PUT, DELETE: Bắt buộc phải có token (đã đăng nhập) VÀ phải là nhân viên
+router.post('/', verifyToken, verifyNhanVien, nhaXuatBanController.create);
+router.put('/:id', verifyToken, verifyNhanVien, nhaXuatBanController.update);
+router.delete('/:id', verifyToken, verifyNhanVien, nhaXuatBanController.delete);
 
 module.exports = router;

@@ -95,3 +95,21 @@ exports.delete = async (req, res) => {
         res.status(500).json({ message: "Lỗi khi xóa", error });
     }
 };
+
+
+// 5. Lấy lịch sử mượn sách của cá nhân (Dành cho Độc giả)
+exports.findLichSuCaNhan = async (req, res) => {
+    try {
+        // req.user.id được lấy từ Token của người đang đăng nhập
+        const docGiaId = req.user.id;
+        
+        // Lọc ra các phiếu mượn có docGiaId khớp với người dùng hiện tại
+        const lichSu = await TheoDoiMuonSach.find({ docGiaId: docGiaId })
+            .populate('sachId', 'tenSach tacGia hinhAnh') // Lấy thêm thông tin sách cho đẹp
+            .sort({ createdAt: -1 }); // Mới nhất xếp trên cùng
+            
+        res.status(200).json(lichSu);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi lấy lịch sử mượn sách", error });
+    }
+};
