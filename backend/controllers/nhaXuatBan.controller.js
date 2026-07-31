@@ -38,3 +38,19 @@ exports.delete = async (req, res) => {
         res.status(500).json({ message: "Lỗi khi xóa", error });
     }
 };
+
+// Hàm 4: Cập nhật thông tin Nhà xuất bản
+exports.update = async (req, res) => {
+    try {
+        // req.params.id lấy ID từ URL, req.body chứa dữ liệu mới từ Form
+        // { new: true } giúp trả về dữ liệu MỚI sau khi đã cập nhật
+        const nxbCapNhat = await NhaXuatBan.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        
+        if (!nxbCapNhat) {
+            return res.status(404).json({ message: "Không tìm thấy Nhà xuất bản để cập nhật" });
+        }
+        res.status(200).json(nxbCapNhat);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi cập nhật", error });
+    }
+};

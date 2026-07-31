@@ -12,5 +12,7 @@ router.post('/', nhaXuatBanController.create);
 // Phương thức DELETE, :id là một tham số động đại diện cho mã ObjectId của MongoDB
 router.delete('/:id', nhaXuatBanController.delete);
 
+// Phương thức PUT dùng để cập nhật toàn bộ thông tin của một đối tượng
+router.put('/:id', nhaXuatBanController.update);
 
 module.exports = router;
