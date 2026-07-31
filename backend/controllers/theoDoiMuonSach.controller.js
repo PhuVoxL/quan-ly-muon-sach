@@ -21,3 +21,25 @@ exports.findAll = async (req, res) => {
         res.status(500).json({ message: "Loi khi lay danh sach phieu muon", error });
     }
 };
+
+// Cập nhật phiếu mượn (Ví dụ khi khách trả sách, ta cập nhật lại Ngày Trả)
+exports.update = async (req, res) => {
+    try {
+        const phieuCapNhat = await TheoDoiMuonSach.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!phieuCapNhat) return res.status(404).json({ message: "Không tìm thấy phiếu mượn" });
+        res.status(200).json(phieuCapNhat);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi cập nhật", error });
+    }
+};
+
+// Xóa phiếu mượn
+exports.delete = async (req, res) => {
+    try {
+        const phieuBiXoa = await TheoDoiMuonSach.findByIdAndDelete(req.params.id);
+        if (!phieuBiXoa) return res.status(404).json({ message: "Không tìm thấy phiếu mượn" });
+        res.status(200).json({ message: "Xóa thành công!" });
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi xóa", error });
+    }
+};

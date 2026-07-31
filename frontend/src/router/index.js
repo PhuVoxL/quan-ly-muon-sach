@@ -3,6 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import NhaXuatBan from '../views/NhaXuatBan.vue';
 import Sach from '../views/Sach.vue';
 import DocGia from '../views/DocGia.vue';
+import MuonTra from '../views/MuonTra.vue';
+
+
+
+
 const TrangChu = { template: '<div><h1 class="text-primary">Chào mừng đến với Hệ thống Quản lý mượn sách!</h1></div>' };
 
 const routes = [
@@ -22,7 +27,12 @@ const routes = [
     { 
         path: '/docgia', 
         component: DocGia 
-    }
+    },
+    { path: '/muontra', component: MuonTra }
+
+
+
+
 ];
 
 const router = createRouter({
