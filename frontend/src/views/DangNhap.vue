@@ -78,7 +78,7 @@ const dangNhapDocGia = async () => {
     const res = await axios.post('http://localhost:3000/api/auth/login-docgia', formDocGia.value);
     luuThongTin(res.data);
     alert(res.data.message);
-    router.push('/'); // Đăng nhập xong về Trang chủ 
+    window.location.href = '/'
   } catch (error) {
     alert(error.response?.data?.message || 'Lỗi đăng nhập');
   }
@@ -89,7 +89,7 @@ const dangNhapNhanVien = async () => {
     const res = await axios.post('http://localhost:3000/api/auth/login-nhanvien', formNhanVien.value);
     luuThongTin(res.data);
     alert(res.data.message);
-    router.push('/'); // Tạm thời đưa về trang chủ, bước sau ta sẽ tách riêng AdminLayout
+    window.location.href = '/'
   } catch (error) {
     alert(error.response?.data?.message || 'Lỗi đăng nhập');
   }
