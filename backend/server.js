@@ -18,6 +18,11 @@ mongoose.connect(process.env.MONGODB_URI)
         console.error('Loi ket noi MongoDB:', error);
     });
 
+
+    const nhaXuatBanRoute = require('./routes/nhaXuatBan.route');
+    app.use('/api/nhaxuatban', nhaXuatBanRoute);
+
+
 // Đường dẫn kiểm tra
 app.get('/', (req, res) => {
     res.send('Xin chao! Backend Quan ly muon sach dang chay!');
