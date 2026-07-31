@@ -138,6 +138,32 @@ const huySua = () => {
 };
 
 const luuPhieu = async () => {
+  // --- BẮT ĐẦU PHẦN KIỂM TRA LỖI (VALIDATION) ---
+  
+  // 1. Nếu người dùng có nhập Ngày trả, ta phải kiểm tra tính hợp lý
+  if (phieuMoi.value.ngayTra) {
+    // Chuyển đổi chuỗi ngày tháng sang định dạng thời gian để so sánh
+    const ngayMuon = new Date(phieuMoi.value.ngayMuon);
+    const ngayTra = new Date(phieuMoi.value.ngayTra);
+    
+    // Nếu ngày trả nhỏ hơn (xảy ra trước) ngày mượn -> Báo lỗi và dừng lại
+    if (ngayTra < ngayMuon) {
+      alert('Lỗi logic: Ngày trả sách không thể xảy ra trước ngày mượn sách!');
+      return; // Lệnh return giúp hàm dừng ngay tại đây, không chạy đoạn code lưu dữ liệu bên dưới
+    }
+  }
+
+  // 2. Chống lỗi người dùng chọn "Ngày trả" ngay lúc "Tạo mới"
+  // (Nếu idCanSua là null tức là đang tạo mới, mà lại điền ngày trả thì ta cảnh báo)
+  if (!idCanSua.value && phieuMoi.value.ngayTra) {
+    const xacNhan = confirm('Bạn đang tạo phiếu mượn MỚI nhưng lại điền "Ngày trả". Hệ thống sẽ đánh dấu là sách này ĐÃ TRẢ. Bạn có chắc chắn không?');
+    if (!xacNhan) {
+      return; // Nếu người dùng bấm Cancel, dừng việc lưu lại
+    }
+  }
+  
+  // --- KẾT THÚC PHẦN KIỂM TRA LỖI ---
+
   try {
     if (idCanSua.value) {
       await axios.put(`http://localhost:3000/api/theodoimuonsach/${idCanSua.value}`, phieuMoi.value);
@@ -147,7 +173,7 @@ const luuPhieu = async () => {
     huySua();
     taiDuLieu();
   } catch (error) {
-    alert('Có lỗi xảy ra!');
+    alert('Có lỗi xảy ra khi lưu phiếu mượn!');
   }
 };
 
