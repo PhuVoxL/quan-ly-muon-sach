@@ -1,15 +1,24 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config(); // Kích hoạt đọc file .env
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Cấp phép cho Frontend gọi API
 app.use(cors());
-// Cho phép Express đọc dữ liệu truyền lên dưới định dạng JSON
 app.use(express.json());
 
-// Tạo một đường dẫn (route) cơ bản để kiểm tra
+// Kết nối với MongoDB thông qua Mongoose
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log('Ket noi MongoDB thanh cong!');
+    })
+    .catch((error) => {
+        console.error('Loi ket noi MongoDB:', error);
+    });
+
+// Đường dẫn kiểm tra
 app.get('/', (req, res) => {
     res.send('Xin chao! Backend Quan ly muon sach dang chay!');
 });
