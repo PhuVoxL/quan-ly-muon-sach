@@ -26,10 +26,15 @@ mongoose.connect(process.env.MONGODB_URI)
     const docGiaRoute = require('./routes/docGia.route');
     app.use('/api/docgia', docGiaRoute);
 
-const sachRoute = require('./routes/sach.route');
+    const sachRoute = require('./routes/sach.route');
     app.use('/api/sach', sachRoute);
 
 
+    const nhanVienRoute = require('./routes/nhanVien.route');
+    app.use('/api/nhanvien', nhanVienRoute);
+
+    const theoDoiMuonSachRoute = require('./routes/theodoimuonsach.route');
+    app.use('/api/theodoimuonsach', theoDoiMuonSachRoute);
 
 // Đường dẫn kiểm tra
 app.get('/', (req, res) => {
