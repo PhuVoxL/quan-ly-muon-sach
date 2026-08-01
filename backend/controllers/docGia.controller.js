@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const DocGia = require('../models/DocGia');
 
 exports.create = async (req, res) => {
@@ -19,9 +21,15 @@ exports.findAll = async (req, res) => {
     }
 };
 
-// Cập nhật thông tin Độc giả
+// Cập nhật Độc giả (Có xử lý mã hóa mật khẩu nếu có thay đổi)
 exports.update = async (req, res) => {
     try {
+        // Kiểm tra nếu request có chứa mật khẩu mới
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt(10);
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+        }
+
         const docGiaCapNhat = await DocGia.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!docGiaCapNhat) return res.status(404).json({ message: "Không tìm thấy Độc giả" });
         res.status(200).json(docGiaCapNhat);

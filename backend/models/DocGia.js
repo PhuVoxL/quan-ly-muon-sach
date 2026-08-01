@@ -8,9 +8,19 @@ const docGiaSchema = new mongoose.Schema({
     phai: { type: String },
     diaChi: { type: String },
     dienThoai: { type: String },
+
+
+
     // --- THÊM 2 TRƯỜNG MỚI ĐỂ PHỤC VỤ ĐĂNG NHẬP ---
     email: { type: String, required: true, unique: true }, 
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    // Thêm dòng này vào bên dưới trường password
+    avatar: { 
+    type: String, 
+    default: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' 
+}
+
+
 }, {
     timestamps: true
 });

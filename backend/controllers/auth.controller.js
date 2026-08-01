@@ -9,7 +9,8 @@ const SECRET_KEY = "thu_vien_secret_key";
 // 1. Hàm Đăng ký tài khoản (Dành cho Khách vãng lai muốn thành Độc giả)
 exports.register = async (req, res) => {
     try {
-        const { maDocGia, ten, email, password, dienThoai } = req.body;
+        // Lấy đầy đủ thông tin từ form
+        const { maDocGia, hoLot, ten, ngaySinh, phai, diaChi, dienThoai, email, password } = req.body;
 
         // Kiểm tra xem email hoặc mã độc giả đã tồn tại chưa
         const checkEmail = await DocGia.findOne({ email });
@@ -21,9 +22,9 @@ exports.register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Tạo Độc giả mới
+        // Tạo Độc giả mới (avatar sẽ tự động lấy giá trị default)
         const newDocGia = new DocGia({
-            maDocGia, ten, email, password: hashedPassword, dienThoai
+            maDocGia, hoLot, ten, ngaySinh, phai, diaChi, dienThoai, email, password: hashedPassword
         });
         
         await newDocGia.save();

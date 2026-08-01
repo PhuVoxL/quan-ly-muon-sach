@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const NhanVien = require('../models/NhanVien');
 
 exports.create = async (req, res) => {
@@ -22,13 +24,21 @@ exports.findAll = async (req, res) => {
 
 // Cập nhật thông tin Nhân viên
 exports.update = async (req, res) => {
+
     try {
+        // Kiểm tra nếu request có chứa mật khẩu mới
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt(10);
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+        }
+
         const nhanVienCapNhat = await NhanVien.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!nhanVienCapNhat) return res.status(404).json({ message: "Không tìm thấy Nhân viên" });
         res.status(200).json(nhanVienCapNhat);
     } catch (error) {
         res.status(500).json({ message: "Lỗi khi cập nhật", error });
     }
+
 };
 
 // Xóa Nhân viên
