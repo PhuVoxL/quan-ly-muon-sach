@@ -18,10 +18,10 @@ exports.create = async (req, res) => {
 // Lấy toàn bộ đánh giá của 1 cuốn sách (Dành cho tất cả mọi người)
 exports.findBySach = async (req, res) => {
     try {
-        // Lấy theo sachId từ URL và dùng populate để nối tên người bình luận
-        const danhSach = await DanhGia.find({ sachId: req.params.sachId })
-            .populate('docGiaId', 'ten hoLot') 
-            .sort({ createdAt: -1 }); // Sắp xếp bình luận mới nhất lên đầu
+        
+ const danhSach = await DanhGia.find({ sachId: req.params.sachId })
+    .populate('docGiaId', 'ten hoLot avatar') // Đã thêm avatar
+    .sort({ createdAt: -1 });
             
         res.status(200).json(danhSach);
     } catch (error) {

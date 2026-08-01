@@ -14,7 +14,11 @@
     <div class="row">
       <div class="col-md-3 mb-4" v-for="sach in sachLocDuoc" :key="sach._id">
         <div class="card h-100 shadow-sm border-0 bg-light">
-          <div class="card-body text-center d-flex flex-column justify-content-center">
+          
+          <img :src="sach.hinhAnh || 'https://tgu.edu.vn/upload/images/1_nha%20gia%20kim.jpg'" 
+               class="card-img-top object-fit-cover" style="height: 280px;" alt="Bìa sách">
+          
+               <div class="card-body text-center d-flex flex-column justify-content-center">
             <h5 class="card-title fw-bold text-dark mb-3">{{ sach.tenSach }}</h5>
             <p class="text-muted small mb-2">Tác giả: {{ sach.tacGia }}</p>
             <div class="mt-auto">

@@ -3,7 +3,11 @@
     <!-- Cột Trái: Thông tin sách và nút mượn -->
     <div class="col-md-5 mb-4">
       <div class="card shadow-sm border-0 h-100">
+
         <div class="card-body text-center p-5 bg-light d-flex flex-column justify-content-center">
+          <img :src="sach.hinhAnh || 'https://via.placeholder.com/300x400?text=No+Cover'" 
+               class="img-fluid rounded mb-4 shadow" style="max-height: 350px; object-fit: cover;" alt="Bìa sách">
+
           <h2 class="text-primary fw-bold mb-4">{{ sach.tenSach }}</h2>
           <p class="fs-5 mb-2"><strong>Tác giả:</strong> {{ sach.tacGia }}</p>
           <p class="fs-5 mb-2"><strong>Năm xuất bản:</strong> {{ sach.namXuatBan || 'Chưa rõ' }}</p>
@@ -51,14 +55,25 @@
           
           <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
             <div class="list-group-item px-0 py-3" v-for="bl in danhSachBinhLuan" :key="bl._id">
-              <div class="d-flex justify-content-between mb-1">
-                <!-- Hiển thị tên người bình luận nhờ lệnh populate ở backend -->
-                <strong class="text-dark">{{ bl.docGiaId?.hoLot }} {{ bl.docGiaId?.ten || 'Người dùng' }}</strong>
+              <!-- Thẻ cha dàn đều 2 bên -->
+              <div class="d-flex justify-content-between mb-2">
+                
+                <!-- BẮT ĐẦU NHÓM BÊN TRÁI (Avatar + Tên) -->
+                <div class="d-flex align-items-center gap-2">
+                  <img :src="bl.docGiaId?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'" 
+                       class="rounded-circle object-fit-cover border" style="width: 35px; height: 35px;" alt="Avatar">
+                  <strong class="text-dark">{{ bl.docGiaId?.hoLot }} {{ bl.docGiaId?.ten || 'Người dùng' }}</strong>
+                </div>
+                <!-- KẾT THÚC NHÓM BÊN TRÁI -->
+
+                <!-- BÊN PHẢI (Số sao) -->
                 <span class="text-warning fw-bold fs-5">{{ bl.diemDanhGia }} ⭐</span>
               </div>
-              <p class="mb-1 text-secondary">{{ bl.noiDung }}</p>
-              <small class="text-muted">{{ new Date(bl.createdAt).toLocaleDateString('vi-VN') }}</small>
+              
+              <p class="mb-1 text-secondary ms-5">{{ bl.noiDung }}</p>
+              <small class="text-muted ms-5">{{ new Date(bl.createdAt).toLocaleDateString('vi-VN') }}</small>
             </div>
+          
           </div>
           
         </div>

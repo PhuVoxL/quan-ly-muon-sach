@@ -22,6 +22,9 @@
             <div class="col-md-3 mb-3">
               <input type="number" class="form-control" placeholder="Đơn giá (VNĐ)" v-model="sachMoi.donGia" required>
             </div>
+            <div class="col-md-8 mb-3">
+              <input type="text" class="form-control" placeholder="Link ảnh bìa sách (URL)" v-model="sachMoi.hinhAnh">
+            </div>
             <div class="col-md-3 mb-3">
               <input type="number" class="form-control" placeholder="Số quyển" v-model="sachMoi.soQuyen" required>
             </div>
@@ -54,6 +57,7 @@
       <thead class="table-dark">
         <tr>
           <th>Mã Sách</th>
+          <th class="ps-3">Bìa Sách</th>
           <th>Tên Sách</th>
           <th>Tác Giả</th>
           <th>Giá</th>
@@ -65,6 +69,10 @@
       <tbody>
         <tr v-for="sach in danhSachSach" :key="sach._id">
           <td>{{ sach.maSach }}</td>
+          <td class="ps-3">
+                <img :src="sach.hinhAnh || 'https://via.placeholder.com/50x70?text=No+Cover'" 
+                     alt="Bìa sách" class="shadow-sm object-fit-cover" style="width: 50px; height: 70px;">
+              </td>
           <td>{{ sach.tenSach }}</td>
           <td>{{ sach.tacGia }}</td>
           <td>{{ sach.donGia }}</td>
