@@ -39,46 +39,55 @@ exports.loginDocGia = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Tìm độc giả theo email
         const docGia = await DocGia.findOne({ email });
         if (!docGia) return res.status(404).json({ message: "Email không tồn tại!" });
 
-        // So sánh mật khẩu
         const validPassword = await bcrypt.compare(password, docGia.password);
         if (!validPassword) return res.status(400).json({ message: "Mật khẩu không đúng!" });
 
-        // Tạo Token chứa thông tin cơ bản
         const token = jwt.sign({ id: docGia._id, role: 'docgia' }, SECRET_KEY, { expiresIn: '1d' });
         
         res.status(200).json({ 
             message: "Đăng nhập Độc giả thành công!", 
             token, 
-            user: { id: docGia._id, ten: docGia.ten, email: docGia.email, role: 'docgia' }
+            user: { 
+                id: docGia._id, 
+                ten: docGia.ten, 
+                email: docGia.email, 
+                role: 'docgia',
+                // ĐÃ SỬA: Đưa avatar vào TỚI TRONG khối user
+                avatar: docGia.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+            }
         });
     } catch (error) {
         res.status(500).json({ message: "Lỗi đăng nhập", error });
     }
 };
 
-// 3. Hàm Đăng nhập cho Nhân Viên
+// 3. Hàm Đăng nhập cho Nhân viên
 exports.loginNhanVien = async (req, res) => {
     try {
-        // Giả sử nhân viên dùng msnv (Mã số nhân viên) để đăng nhập
         const { msnv, password } = req.body;
 
         const nhanVien = await NhanVien.findOne({ msnv });
         if (!nhanVien) return res.status(404).json({ message: "Mã nhân viên không tồn tại!" });
 
-        // Tạm thời so sánh trực tiếp vì form cũ ta chưa mã hóa pass của nhân viên. 
-        // (Nếu sau này bạn mã hóa pass nhân viên lúc thêm mới, ta sẽ dùng bcrypt.compare ở đây)
-        if (password !== nhanVien.password) return res.status(400).json({ message: "Mật khẩu không đúng!" });
+        // ĐÃ SỬA: Dùng bcrypt.compare để so sánh mật khẩu mã hóa giống như Độc giả
+        const validPassword = await bcrypt.compare(password, nhanVien.password);
+        if (!validPassword) return res.status(400).json({ message: "Mật khẩu không đúng!" });
 
         const token = jwt.sign({ id: nhanVien._id, role: 'nhanvien' }, SECRET_KEY, { expiresIn: '1d' });
         
         res.status(200).json({ 
             message: "Đăng nhập Nhân viên thành công!", 
             token, 
-            user: { id: nhanVien._id, hoTen: nhanVien.hoTenNV, role: 'nhanvien' }
+            user: { 
+                id: nhanVien._id, 
+                hoTen: nhanVien.hoTenNV, 
+                role: 'nhanvien',
+                // ĐÃ SỬA: Đưa avatar vào TỚI TRONG khối user
+                avatar: nhanVien.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+            }
         });
     } catch (error) {
         res.status(500).json({ message: "Lỗi đăng nhập", error });

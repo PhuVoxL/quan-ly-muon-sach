@@ -29,7 +29,10 @@
             </div>
             <div class="col-md-4 mb-3">
               <!-- Mật khẩu tạm thời để dạng text hoặc password tùy bạn, ở đây dùng text để dễ nhìn khi test -->
-              <input type="text" class="form-control" placeholder="Mật khẩu đăng nhập" v-model="nhanVienMoi.password" required>
+              <input type="password" class="form-control" placeholder="Mật khẩu..." 
+                     v-model="nhanVienMoi.password" 
+                     :required="!idCanSua" 
+                     autocomplete="new-password">
             </div>
           </div>
           <div class="d-flex justify-content-end gap-2">
@@ -119,13 +122,10 @@ const xoaNhanVien = async (id) => {
 };
 
 const chuanBiSua = (nv) => {
-  nhanVienMoi.value = {
-    msnv: nv.msnv,
-    hoTenNV: nv.hoTenNV,
-    password: nv.password,
-    chucVu: nv.chucVu,
-    diaChi: nv.diaChi,
-    soDienThoai: nv.soDienThoai
+  // Rải dữ liệu cũ ra form, nhưng CỐ TÌNH GÁN mật khẩu thành rỗng
+  nhanVienMoi.value = { 
+    ...nv,
+    password: '' 
   };
   idCanSua.value = nv._id;
 };
@@ -145,8 +145,9 @@ const luuNhanVien = async () => {
     huySua();
     layDanhSachNhanVien();
   } catch (error) {
-    alert('Có lỗi, kiểm tra lại mã nhân viên có thể bị trùng!');
-  }
+  // Ưu tiên hiển thị thông báo lỗi thật từ Backend gửi lên
+  alert(error.response?.data?.message || 'Có lỗi xảy ra trong quá trình cập nhật!');
+}
 };
 
 onMounted(() => {

@@ -99,6 +99,7 @@ const capNhatThongTin = async () => {
     // Cập nhật lại tên trên LocalStorage để Menu đổi tên lập tức
     const user = JSON.parse(localStorage.getItem('user'));
     user.ten = form.value.ten;
+    user.avatar = form.value.avatar;
     localStorage.setItem('user', JSON.stringify(user));
     window.location.reload(); // Tải lại trang để áp dụng thay đổi
   } catch (error) {

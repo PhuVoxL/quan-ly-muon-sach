@@ -24,29 +24,37 @@ exports.findAll = async (req, res) => {
 
 // Cập nhật thông tin Nhân viên
 // Cập nhật Độc giả (Dành cho Nhân viên)
+// Cập nhật Nhân viên
+// Cập nhật Nhân viên
 exports.update = async (req, res) => {
     try {
-        // Kiểm tra xem Nhân viên có nhập mật khẩu mới không (khác rỗng)
-        if (req.body.password && req.body.password.trim() !== '') {
+        // Tạo một bản sao của dữ liệu gửi lên
+        const updateData = { ...req.body };
+
+        // Kiểm tra xem Nhân viên có nhập mật khẩu mới không
+        if (updateData.password && updateData.password.trim() !== '') {
             const bcrypt = require('bcrypt');
             const salt = await bcrypt.genSalt(10);
-            req.body.password = await bcrypt.hash(req.body.password, salt);
+            updateData.password = await bcrypt.hash(updateData.password, salt);
         } else {
-            // RẤT QUAN TRỌNG: Nếu nhân viên để trống ô mật khẩu, ta phải xóa trường này 
-            // khỏi gói dữ liệu để MongoDB không ghi đè làm mất mật khẩu cũ của Độc giả
-            delete req.body.password;
+            // Xóa trường password khỏi object để không ghi đè mật khẩu rỗng vào CSDL
+            delete updateData.password;
         }
 
-        const docGiaCapNhat = await DocGia.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!docGiaCapNhat) return res.status(404).json({ message: "Không tìm thấy Độc giả" });
-        res.status(200).json(docGiaCapNhat);
+        const nvCapNhat = await NhanVien.findByIdAndUpdate(
+            req.params.id, 
+            { $set: updateData }, 
+            { new: true }
+        );
+
+        if (!nvCapNhat) return res.status(404).json({ message: "Không tìm thấy Nhân viên" });
+        res.status(200).json(nvCapNhat);
+        
     } catch (error) {
-        // Bắt thêm lỗi E11000 của MongoDB trong trường hợp Nhân viên đổi email 
-        // nhưng lại vô tình nhập trùng email của người khác
         if (error.code === 11000) {
-            return res.status(400).json({ message: "Lỗi: Email hoặc Mã Độc giả đã bị trùng!" });
+            return res.status(400).json({ message: "Lỗi: Mã Nhân viên hoặc Email đã tồn tại!" });
         }
-        res.status(500).json({ message: "Lỗi khi cập nhật", error });
+        res.status(500).json({ message: "Lỗi Server khi cập nhật", error });
     }
 };
 
