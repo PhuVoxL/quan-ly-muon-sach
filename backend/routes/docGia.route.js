@@ -9,6 +9,11 @@ router.get('/', docGiaController.findAll);
 
 // POST, PUT, DELETE: Bắt buộc phải có token (đã đăng nhập) VÀ phải là nhân viên
 router.post('/', verifyToken, verifyNhanVien, docGiaController.create);
+
+// --- QUYỀN CỦA ĐỘC GIẢ ---
+router.get('/profile/me', verifyToken, docGiaController.getProfile);
+router.put('/profile/me', verifyToken, docGiaController.updateProfile);
+
 router.put('/:id', verifyToken, verifyNhanVien, docGiaController.update);
 router.delete('/:id', verifyToken, verifyNhanVien, docGiaController.delete);
 

@@ -36,6 +36,16 @@
             <div class="col-md-6 mb-3">
               <input type="text" class="form-control" placeholder="Số điện thoại" v-model="docGiaMoi.dienThoai">
             </div>
+            <div class="col-md-12 mb-3">
+              <input type="text" class="form-control" placeholder="Link ảnh Avatar (URL)" v-model="docGiaMoi.avatar">
+            </div>
+            <div class="col-md-6 mb-3">
+              <input type="email" class="form-control" placeholder="Email đăng nhập" v-model="docGiaMoi.email">
+            </div>
+            <div class="col-md-6 mb-3">
+              <input type="password" class="form-control" placeholder="Đặt lại mật khẩu mới..." v-model="docGiaMoi.password" autocomplete="new-password">
+            </div>
+
           </div>
           <div class="d-flex justify-content-end gap-2">
             <button type="submit" class="btn" :class="idCanSua ? 'btn-warning' : 'btn-success'">
@@ -119,8 +129,10 @@ const chuanBiSua = (dg) => {
     ngaySinh: ngaySinhFormatted,
     phai: dg.phai,
     diaChi: dg.diaChi,
-    dienThoai: dg.dienThoai
+    dienThoai: dg.dienThoai,
+    password: '', // Không hiển thị mật khẩu cũ, để trống nếu không đổi
   };
+  
   idCanSua.value = dg._id;
 };
 

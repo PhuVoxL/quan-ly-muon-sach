@@ -12,6 +12,7 @@ import DangKy from '../views/DangKy.vue';
 import TimSach from '../views/TimSach.vue';
 import ChiTietSach from '../views/ChiTietSach.vue';
 import LichSuMuon from '../views/LichSuMuon.vue';
+import ThongTinCaNhan from '../views/ThongTinCaNhan.vue';
 
 
 const routes = [
@@ -27,6 +28,7 @@ const routes = [
     { path: '/dangnhap', component: DangNhap },
     { path: '/dangky', component: DangKy },
     { path: '/lichsu', component: LichSuMuon },
+    { path: '/thongtin', component: ThongTinCaNhan },
 
 
 ];

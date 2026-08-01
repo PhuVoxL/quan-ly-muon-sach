@@ -23,22 +23,31 @@ exports.findAll = async (req, res) => {
 
 
 // Cập nhật thông tin Nhân viên
+// Cập nhật Độc giả (Dành cho Nhân viên)
 exports.update = async (req, res) => {
-
     try {
-        // Kiểm tra nếu request có chứa mật khẩu mới
-        if (req.body.password) {
+        // Kiểm tra xem Nhân viên có nhập mật khẩu mới không (khác rỗng)
+        if (req.body.password && req.body.password.trim() !== '') {
+            const bcrypt = require('bcrypt');
             const salt = await bcrypt.genSalt(10);
             req.body.password = await bcrypt.hash(req.body.password, salt);
+        } else {
+            // RẤT QUAN TRỌNG: Nếu nhân viên để trống ô mật khẩu, ta phải xóa trường này 
+            // khỏi gói dữ liệu để MongoDB không ghi đè làm mất mật khẩu cũ của Độc giả
+            delete req.body.password;
         }
 
-        const nhanVienCapNhat = await NhanVien.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!nhanVienCapNhat) return res.status(404).json({ message: "Không tìm thấy Nhân viên" });
-        res.status(200).json(nhanVienCapNhat);
+        const docGiaCapNhat = await DocGia.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!docGiaCapNhat) return res.status(404).json({ message: "Không tìm thấy Độc giả" });
+        res.status(200).json(docGiaCapNhat);
     } catch (error) {
+        // Bắt thêm lỗi E11000 của MongoDB trong trường hợp Nhân viên đổi email 
+        // nhưng lại vô tình nhập trùng email của người khác
+        if (error.code === 11000) {
+            return res.status(400).json({ message: "Lỗi: Email hoặc Mã Độc giả đã bị trùng!" });
+        }
         res.status(500).json({ message: "Lỗi khi cập nhật", error });
     }
-
 };
 
 // Xóa Nhân viên

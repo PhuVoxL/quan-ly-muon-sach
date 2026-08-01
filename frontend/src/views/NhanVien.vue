@@ -12,6 +12,9 @@
             <div class="col-md-3 mb-3">
               <input type="text" class="form-control" placeholder="Mã Số NV" v-model="nhanVienMoi.msnv" required>
             </div>
+            <div class="col-md-12 mb-3">
+              <input type="text" class="form-control" placeholder="Link ảnh Avatar (URL)" v-model="nhanVienMoi.avatar">
+            </div>
             <div class="col-md-5 mb-3">
               <input type="text" class="form-control" placeholder="Họ Tên Nhân Viên" v-model="nhanVienMoi.hoTenNV" required>
             </div>

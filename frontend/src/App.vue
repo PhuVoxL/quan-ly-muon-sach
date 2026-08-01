@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- Thanh Điều Hướng (Navbar) -->
+    <!-- Thanh Điều Hướng (Navbar) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <router-link class="navbar-brand fw-bold" to="/">Thư Viện</router-link>
@@ -14,18 +15,14 @@
               <router-link class="nav-link" to="/">Trang Chủ</router-link>
             </li>
             
-            <!-- 1. Giao diện chung cho Khách & Độc Giả (Không phải Nhân viên) -->
             <li class="nav-item" v-if="!isNhanVien">
               <router-link class="nav-link" to="/timsach">Tìm Sách</router-link>
             </li>
             
-            <!-- 2. Giao diện riêng của Độc Giả -->
             <li class="nav-item" v-if="isDocGia">
-              <!-- Tạm trỏ đến /lichsu, chúng ta sẽ tạo trang này ở bước sau -->
               <router-link class="nav-link text-warning" to="/lichsu">Lịch Sử Mượn</router-link>
             </li>
 
-            <!-- 3. Giao diện riêng của Nhân Viên Quản Trị -->
             <template v-if="isNhanVien">
               <li class="nav-item"><router-link class="nav-link" to="/nhaxuatban">Nhà Xuất Bản</router-link></li>
               <li class="nav-item"><router-link class="nav-link" to="/sach">Quản Lý Sách</router-link></li>
@@ -42,8 +39,14 @@
               <a class="nav-link dropdown-toggle fw-bold text-success" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                 Chào, {{ userName }}
               </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item text-danger" href="#" @click.prevent="dangXuat">Đăng xuất</a></li>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                <li v-if="isDocGia">
+                  <router-link class="dropdown-item text-primary fw-bold" to="/thongtin">Cập nhật hồ sơ</router-link>
+                </li>
+                <!-- Đường kẻ ngang chỉ hiện cho Độc giả -->
+                <li v-if="isDocGia"><hr class="dropdown-divider"></li>
+                <!-- Nút đăng xuất dùng chung cho cả Nhân viên và Độc giả -->
+                <li><a class="dropdown-item text-danger fw-bold" href="#" @click.prevent="dangXuat">Đăng xuất</a></li>
               </ul>
             </li>
             
