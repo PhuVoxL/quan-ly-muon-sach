@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <h2 class="mb-4">Quản lý Độc Giả</h2>
@@ -57,6 +58,12 @@
       </div>
     </div>
 
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" class="form-control border-primary" placeholder="Tìm kiếm theo Tên hoặc Mã ĐG..." v-model="tuKhoa">
+      </div>
+    </div>
+
     <!-- Bảng hiển thị Độc Giả -->
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
@@ -70,29 +77,43 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="dg in danhSachDocGia" :key="dg._id">
-          <td>{{ dg.maDocGia }}</td>
-          <!-- Nối họ lót và tên lại để hiển thị cho gọn -->
-          <td>{{ dg.hoLot }} {{ dg.ten }}</td>
-          <!-- Chuyển đổi định dạng ngày cho dễ nhìn -->
-          <td>{{ dg.ngaySinh ? new Date(dg.ngaySinh).toLocaleDateString('vi-VN') : '' }}</td>
-          <td>{{ dg.phai }}</td>
-          <td>{{ dg.dienThoai }}</td>
-          <td>
-            <button class="btn btn-warning btn-sm me-2" @click="chuanBiSua(dg)">Sửa</button>
-            <button class="btn btn-danger btn-sm" @click="xoaDocGia(dg._id)">Xóa</button>
-          </td>
-        </tr>
-      </tbody>
+  <!-- Sửa 'docGia' thành 'dg' ở dòng này -->
+  <tr v-for="dg in danhSachLocDuoc" :key="dg._id">
+    <td>{{ dg.maDocGia }}</td>
+    <!-- Nối họ lót và tên lại để hiển thị cho gọn -->
+    <td>{{ dg.hoLot }} {{ dg.ten }}</td>
+    <!-- Chuyển đổi định dạng ngày cho dễ nhìn -->
+    <td>{{ dg.ngaySinh ? new Date(dg.ngaySinh).toLocaleDateString('vi-VN') : '' }}</td>
+    <td>{{ dg.phai }}</td>
+    <td>{{ dg.dienThoai }}</td>
+    <td>
+      <button class="btn btn-warning btn-sm me-2" @click="chuanBiSua(dg)">Sửa</button>
+      <button class="btn btn-danger btn-sm" @click="xoaDocGia(dg._id)">Xóa</button>
+    </td>
+  </tr>
+</tbody>
     </table>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+
+import { ref, onMounted, computed } from 'vue'; 
 import axios from 'axios';
 
 const danhSachDocGia = ref([]);
+const tuKhoa = ref(''); // Biến lưu từ khóa tìm kiếm
+
+// Tạo ra một danh sách mới, tự động thay đổi mỗi khi tuKhoa thay đổi
+const danhSachLocDuoc = computed(() => {
+  return danhSachDocGia.value.filter(dg => 
+    (dg.ten && dg.ten.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (dg.maDocGia && dg.maDocGia.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (dg.dienThoai && dg.dienThoai.toLowerCase().includes(tuKhoa.value.toLowerCase())) 
+  );
+});
+
+
 const idCanSua = ref(null);
 const docGiaMoi = ref({
   maDocGia: '', hoLot: '', ten: '', ngaySinh: '', phai: '', diaChi: '', dienThoai: ''

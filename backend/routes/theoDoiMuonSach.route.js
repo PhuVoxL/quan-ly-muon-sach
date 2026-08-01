@@ -5,6 +5,10 @@ const { verifyToken, verifyNhanVien } = require('../middlewares/auth.middleware'
 
 // --- QUYỀN CỦA ĐỘC GIẢ ---
 // Phải đăng nhập mới được xem lịch sử của mình (Lưu ý: Route /lich-su phải đặt trước /:id)
+
+router.get('/top3', theoDoiMuonSachController.getTop3Thang);
+
+
 router.get('/lich-su', verifyToken, theoDoiMuonSachController.findLichSuCaNhan);
 // Phải đăng nhập mới được gửi yêu cầu mượn sách (Tạo phiếu mới)
 router.post('/', verifyToken, theoDoiMuonSachController.create);

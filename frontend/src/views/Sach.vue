@@ -52,6 +52,13 @@
       </div>
     </div>
 
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" class="form-control border-primary" placeholder="Tìm kiếm theo Tên Sách hoặc Mã Sách..." v-model="tuKhoa">
+      </div>
+    </div>
+
+
     <!-- Bảng hiển thị Sách -->
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
@@ -67,10 +74,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="sach in danhSachSach" :key="sach._id">
+        <tr v-for="sach in danhSachLocDuoc" :key="sach._id">
           <td>{{ sach.maSach }}</td>
           <td class="ps-3">
-                <img :src="sach.hinhAnh || 'https://via.placeholder.com/50x70?text=No+Cover'" 
+                <img :src="sach.hinhAnh || 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'" 
                      alt="Bìa sách" class="shadow-sm object-fit-cover" style="width: 50px; height: 70px;">
               </td>
           <td>{{ sach.tenSach }}</td>
@@ -90,10 +97,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue'; 
 import axios from 'axios';
 
 const danhSachSach = ref([]);
+const tuKhoa = ref(''); // Biến lưu từ khóa tìm kiếm
+
+// Tạo ra một danh sách mới, tự động thay đổi mỗi khi tuKhoa thay đổi
+const danhSachLocDuoc = computed(() => {
+  return danhSachSach.value.filter(sach => 
+    (sach.tenSach && sach.tenSach.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (sach.maSach && sach.maSach.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (sach.tacGia && sach.tacGia.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (sach.nhaXuatBanId?.tenNXB && sach.nhaXuatBanId.tenNXB.toLowerCase().includes(tuKhoa.value.toLowerCase()))
+  );
+});
+
+
+
+
+
 const danhSachNXB = ref([]); // Biến chứa danh sách NXB cho thẻ select
 const idCanSua = ref(null);
 const sachMoi = ref({

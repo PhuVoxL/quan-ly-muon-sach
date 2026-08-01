@@ -135,3 +135,39 @@ exports.yeuCauGiaHan = async (req, res) => {
         res.status(500).json({ message: "Lỗi khi gửi yêu cầu", error });
     }
 };
+
+
+// 7. Thống kê Top 3 sách mượn nhiều nhất trong tháng (Dành cho Trang chủ)
+exports.getTop3Thang = async (req, res) => {
+    try {
+        const now = new Date();
+        // Lấy ngày đầu tiên của tháng hiện tại
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        // Tìm tất cả các phiếu mượn từ đầu tháng đến nay
+        const phieuMuonThangNay = await TheoDoiMuonSach.find({
+            ngayMuon: { $gte: startOfMonth }
+        }).populate('sachId', 'tenSach hinhAnh tacGia');
+
+        // Tạo một Object để đếm số lượt mượn của từng cuốn sách
+        const thongKe = {};
+        phieuMuonThangNay.forEach(phieu => {
+            if (phieu.sachId) { // Đảm bảo sách chưa bị xóa khỏi hệ thống
+                const id = phieu.sachId._id.toString();
+                if (!thongKe[id]) {
+                    thongKe[id] = { sach: phieu.sachId, soLuotMuon: 0 };
+                }
+                thongKe[id].soLuotMuon += 1; // Tăng biến đếm
+            }
+        });
+
+        // Chuyển Object thành Mảng, sắp xếp giảm dần và cắt lấy 3 phần tử đầu tiên
+        const top3 = Object.values(thongKe)
+            .sort((a, b) => b.soLuotMuon - a.soLuotMuon)
+            .slice(0, 3);
+
+        res.status(200).json(top3);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi thống kê", error });
+    }
+};

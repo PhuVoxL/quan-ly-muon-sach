@@ -33,6 +33,13 @@
       </div>
     </div>
 
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" class="form-control border-primary" placeholder="Tìm kiếm theo Tên Độc Giả hoặc Tên ĐG..." v-model="tuKhoa">
+      </div>
+    </div>
+
+
     <!-- Bảng danh sách tất cả phiếu mượn -->
     <div class="card shadow-sm border-0">
       <div class="card-body p-0">
@@ -48,7 +55,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="phieu in danhSachPhieu" :key="phieu._id">
+            <tr v-for="phieu in danhSachLocDuoc" :key="phieu._id">
               <td class="ps-3 fw-bold">{{ phieu.docGiaId?.hoLot }} {{ phieu.docGiaId?.ten }}</td>
               <td class="text-primary">{{ phieu.sachId?.tenSach }}</td>
               <td>{{ phieu.ngayMuon ? new Date(phieu.ngayMuon).toLocaleDateString('vi-VN') : '' }}</td>
@@ -74,11 +81,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 const danhSachPhieu = ref([]);
 const idCanSua = ref(null);
+const tuKhoa = ref('');
+
+const danhSachLocDuoc = computed(() => {
+  return danhSachPhieu.value.filter(phieu => 
+    (phieu.docGiaId?.hoLot && phieu.docGiaId.hoLot.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (phieu.docGiaId?.ten && phieu.docGiaId.ten.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (phieu.sachId?.tenSach && phieu.sachId.tenSach.toLowerCase().includes(tuKhoa.value.toLowerCase()))
+  );
+});
 
 // Lấy thêm trường trangThai vào form
 const phieuMoi = ref({ ngayTra: '', trangThai: '' });

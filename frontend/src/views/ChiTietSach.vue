@@ -5,7 +5,7 @@
       <div class="card shadow-sm border-0 h-100">
 
         <div class="card-body text-center p-5 bg-light d-flex flex-column justify-content-center">
-          <img :src="sach.hinhAnh || 'https://via.placeholder.com/300x400?text=No+Cover'" 
+          <img :src="sach.hinhAnh || 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'" 
                class="img-fluid rounded mb-4 shadow" style="max-height: 350px; object-fit: cover;" alt="Bìa sách">
 
           <h2 class="text-primary fw-bold mb-4">{{ sach.tenSach }}</h2>
@@ -60,7 +60,7 @@
                 
                 <!-- BẮT ĐẦU NHÓM BÊN TRÁI (Avatar + Tên) -->
                 <div class="d-flex align-items-center gap-2">
-                  <img :src="bl.docGiaId?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'" 
+                  <img :src="bl.docGiaId?.avatar || 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'" 
                        class="rounded-circle object-fit-cover border" style="width: 35px; height: 35px;" alt="Avatar">
                   <strong class="text-dark">{{ bl.docGiaId?.hoLot }} {{ bl.docGiaId?.ten || 'Người dùng' }}</strong>
                 </div>

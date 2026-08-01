@@ -42,6 +42,12 @@
       </div>
     </div>
 
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" class="form-control border-primary" placeholder="Tìm kiếm theo Tên hoặc Mã NV..." v-model="tuKhoa">
+      </div>
+    </div>
+
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
         <tr>
@@ -53,7 +59,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="nv in danhSachNhanVien" :key="nv._id">
+        <tr v-for="nv in danhSachLocDuoc" :key="nv._id">
           <td>{{ nv.msnv }}</td>
           <td>{{ nv.hoTenNV }}</td>
           <td>{{ nv.chucVu }}</td>
@@ -69,10 +75,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 const danhSachNhanVien = ref([]);
+const tuKhoa = ref(''); // Biến lưu từ khóa tìm kiếm
+
+// Tạo ra một danh sách mới, tự động thay đổi mỗi khi tuKhoa thay đổi
+const danhSachLocDuoc = computed(() => {
+  return danhSachNhanVien.value.filter(nv => 
+    (nv.hoTenNV && nv.hoTenNV.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (nv.msnv && nv.msnv.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (nv.soDienThoai && nv.soDienThoai.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (nv.chucVu && nv.chucVu.toLowerCase().includes(tuKhoa.value.toLowerCase()))
+  );
+});
+
+
+
 const idCanSua = ref(null);
 const nhanVienMoi = ref({
   msnv: '', hoTenNV: '', password: '', chucVu: '', diaChi: '', soDienThoai: ''

@@ -33,6 +33,13 @@
       </div>
     </div>
 
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" class="form-control border-primary" placeholder="Tìm kiếm theo Tên NXB hoặc Mã NXB..." v-model="tuKhoa">
+      </div>
+    </div>
+
     <!-- Bảng hiển thị -->
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
@@ -44,7 +51,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="nxb in danhSachNXB" :key="nxb._id">
+        <tr v-for="nxb in danhSachLocDuoc" :key="nxb._id">
           <td>{{ nxb.maNXB }}</td>
           <td>{{ nxb.tenNXB }}</td>
           <td>{{ nxb.diaChi }}</td>
@@ -60,10 +67,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 const danhSachNXB = ref([]);
+const tuKhoa = ref(''); // Biến lưu từ khóa tìm kiếm
+
+// Tạo ra một danh sách mới, tự động thay đổi mỗi khi tuKhoa thay đổi
+const danhSachLocDuoc = computed(() => {
+  return danhSachNXB.value.filter(nxb => 
+    (nxb.tenNXB && nxb.tenNXB.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (nxb.maNXB && nxb.maNXB.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (nxb.diaChi && nxb.diaChi.toLowerCase().includes(tuKhoa.value.toLowerCase()))
+  );
+});
+
+
+
 const nxbMoi = ref({ maNXB: '', tenNXB: '', diaChi: '' });
 // Biến lưu trữ ID của dòng đang được bấm sửa (Nếu null nghĩa là đang ở chế độ Thêm mới)
 const idCanSua = ref(null); 

@@ -15,7 +15,7 @@
       <div class="col-md-3 mb-4" v-for="sach in sachLocDuoc" :key="sach._id">
         <div class="card h-100 shadow-sm border-0 bg-light">
           
-          <img :src="sach.hinhAnh || 'https://tgu.edu.vn/upload/images/1_nha%20gia%20kim.jpg'" 
+          <img :src="sach.hinhAnh || 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'" 
                class="card-img-top object-fit-cover" style="height: 280px;" alt="Bìa sách">
           
                <div class="card-body text-center d-flex flex-column justify-content-center">

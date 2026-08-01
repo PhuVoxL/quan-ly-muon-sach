@@ -13,7 +13,8 @@ const sachSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'NhaXuatBan', 
         required: true 
-    }
+    },
+    hinhAnh: { type: String, default: '' }
 }, { 
     timestamps: true 
 });
