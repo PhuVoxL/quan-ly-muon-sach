@@ -144,9 +144,11 @@ exports.getTop3Thang = async (req, res) => {
         // Lấy ngày đầu tiên của tháng hiện tại
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-        // Tìm tất cả các phiếu mượn từ đầu tháng đến nay
+        // Tìm tất cả các phiếu mượn từ đầu tháng đến nay VÀ phải có trạng thái hợp lệ
         const phieuMuonThangNay = await TheoDoiMuonSach.find({
-            ngayMuon: { $gte: startOfMonth }
+            ngayMuon: { $gte: startOfMonth },
+            // Chỉ đếm những phiếu đã được nhân viên duyệt cho mượn hoặc đã trả
+            trangThai: { $in: ['Đang mượn', 'Yêu cầu gia hạn', 'Đã trả'] } 
         }).populate('sachId', 'tenSach hinhAnh tacGia');
 
         // Tạo một Object để đếm số lượt mượn của từng cuốn sách

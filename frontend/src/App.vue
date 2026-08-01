@@ -36,7 +36,11 @@
           <ul class="navbar-nav">
             <!-- Nếu đã đăng nhập: Hiện tên và nút Đăng xuất -->
             <li class="nav-item dropdown" v-if="isLoggedIn">
-              <a class="nav-link dropdown-toggle fw-bold text-success" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <a class="nav-link dropdown-toggle fw-bold text-success d-flex align-items-center gap-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                <!-- Thẻ img hiển thị avatar thu nhỏ -->
+                <img :src="userAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'" 
+                     class="rounded-circle object-fit-cover border border-success" 
+                     style="width: 28px; height: 28px;" alt="Avatar">
                 Chào, {{ userName }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end shadow border-0">
@@ -75,7 +79,7 @@ const isLoggedIn = ref(false);
 const isDocGia = ref(false);
 const isNhanVien = ref(false);
 const userName = ref('');
-
+const userAvatar = ref('');
 // Khi trang web tải lên, kiểm tra xem có thông tin đăng nhập trong ví không
 onMounted(() => {
   const token = localStorage.getItem('token');
@@ -87,7 +91,8 @@ onMounted(() => {
     
     // Độc giả lưu là 'ten', Nhân viên lưu là 'hoTen'
     userName.value = user.ten || user.hoTen; 
-    
+    userAvatar.value = user.avatar;
+
     // Kiểm tra quyền (Role)
     if (user.role === 'docgia') isDocGia.value = true;
     if (user.role === 'nhanvien') isNhanVien.value = true;
