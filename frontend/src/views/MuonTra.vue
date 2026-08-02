@@ -50,6 +50,7 @@
               <th>Cuốn Sách</th>
               <th>Ngày Mượn</th>
               <th>Ngày Trả</th>
+              <th>Người Duyệt</th>
               <th>Trạng Thái</th>
               <th class="text-center">Hành Động</th>
             </tr>
@@ -60,6 +61,15 @@
               <td class="text-primary">{{ phieu.sachId?.tenSach }}</td>
               <td>{{ phieu.ngayMuon ? new Date(phieu.ngayMuon).toLocaleDateString('vi-VN') : '' }}</td>
               <td>{{ phieu.ngayTra ? new Date(phieu.ngayTra).toLocaleDateString('vi-VN') : '---' }}</td>
+              
+              <!-- THÊM CỘT DỮ LIỆU NÀY -->
+              <td>
+                <span v-if="phieu.nhanVienDuyetId" class="badge bg-info text-dark">
+                  {{ phieu.nhanVienDuyetId.hoTenNV }}
+                </span>
+                <span v-else class="text-muted fst-italic">Chưa duyệt</span>
+              </td>
+
               <td>
                 <span class="badge fs-6" :class="layMauTrangThai(phieu.trangThai)">
                   {{ phieu.trangThai }}
@@ -147,8 +157,24 @@ const huySua = () => {
 
 const luuPhieu = async () => {
   try {
-    // Gọi API PUT để cập nhật trạng thái mới
-    await axios.put(`http://localhost:3000/api/theodoimuonsach/${idCanSua.value}`, phieuMoi.value);
+    // 1. Trích xuất thông tin Nhân viên đang đăng nhập từ LocalStorage
+    const userStr = localStorage.getItem('user');
+    let nhanVienDuyetId = null;
+    
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      nhanVienDuyetId = user.id; // Lấy ID của nhân viên
+    }
+
+    // 2. Gộp ID nhân viên vào dữ liệu phiếu mới gửi đi
+    const payload = {
+      ...phieuMoi.value,
+      nhanVienDuyetId: nhanVienDuyetId
+    };
+
+    // 3. Gọi API PUT và truyền payload đã gộp
+    await axios.put(`http://localhost:3000/api/theodoimuonsach/${idCanSua.value}`, payload);
+    
     huySua();
     taiDuLieu();
   } catch (error) {

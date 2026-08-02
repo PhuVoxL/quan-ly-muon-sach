@@ -32,7 +32,8 @@ exports.findAll = async (req, res) => {
     try {
         const danhSachPhieuMuon = await TheoDoiMuonSach.find()
             .populate('docGiaId')
-            .populate('sachId');
+            .populate('sachId')
+            .populate('nhanVienDuyetId', 'hoTenNV');
         res.status(200).json(danhSachPhieuMuon);
     } catch (error) {
         res.status(500).json({ message: "Lỗi khi lấy danh sách phieu muon", error });

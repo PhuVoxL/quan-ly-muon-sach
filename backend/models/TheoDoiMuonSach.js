@@ -11,7 +11,13 @@ const theoDoiMuonSachSchema = new mongoose.Schema({
         // enum giúp giới hạn các giá trị hợp lệ, không cho phép nhập sai chính tả
         enum: ['Chờ duyệt', 'Đang mượn', 'Yêu cầu gia hạn', 'Đã trả', 'Từ chối'], 
         default: 'Chờ duyệt' // Mặc định khi độc giả gửi yêu cầu sẽ là Chờ duyệt
+    },
+    nhanVienDuyetId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'NhanVien',
+        default: null
     }
+
 }, {
     timestamps: true
 });
