@@ -92,7 +92,8 @@ const danhSachLocDuoc = computed(() => {
   return danhSachPhieu.value.filter(phieu => 
     (phieu.docGiaId?.hoLot && phieu.docGiaId.hoLot.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
     (phieu.docGiaId?.ten && phieu.docGiaId.ten.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
-    (phieu.sachId?.tenSach && phieu.sachId.tenSach.toLowerCase().includes(tuKhoa.value.toLowerCase()))
+    (phieu.sachId?.tenSach && phieu.sachId.tenSach.toLowerCase().includes(tuKhoa.value.toLowerCase())) ||
+    (phieu.trangThai && phieu.trangThai.toLowerCase().includes(tuKhoa.value.toLowerCase()))
   );
 });
 
